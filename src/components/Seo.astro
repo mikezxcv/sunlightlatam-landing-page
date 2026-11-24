@@ -1,8 +1,7 @@
 ---
-import { getImage } from "astro:assets";
 import { business, navigation } from "../data/business";
 import { services } from "../data/services";
-import { heroPhoto } from "../data/gallery";
+import socialImage from "../assets/marca/og-image.png";
 
 interface Props { title: string; description: string }
 const { title, description } = Astro.props;
@@ -11,7 +10,6 @@ const url = (value: string) => Astro.site ? new URL(value, Astro.site).href : va
 const canonical = Astro.site && url(path);
 const article = path.startsWith("/blog/") && path !== "/blog/";
 const name = title.replace(` | ${business.name}`, "");
-const photo = await getImage({ src: heroPhoto, width: 1200, height: 630, format: "jpeg" });
 const organization = { "@id": url("/#organization") };
 const website = { "@id": url("/#website") };
 const page = { "@id": url(path + "#webpage") };
@@ -55,6 +53,6 @@ const graph = [
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 {canonical && <meta property="og:url" content={canonical} />}
-{Astro.site && <meta property="og:image" content={url(photo.src)} />}
+{Astro.site && <meta property="og:image" content={url(socialImage.src)} />}
 <meta name="twitter:card" content="summary_large_image" />
 <script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c")} />
