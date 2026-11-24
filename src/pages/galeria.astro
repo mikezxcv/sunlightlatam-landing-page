@@ -1,0 +1,8 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Gallery from "../components/Gallery.astro";
+import { business } from "../data/business";
+---
+<BaseLayout title={`Galería | ${business.name}`} description="Fotos del equipo de Sunlight en campo.">
+  <Gallery full />
+</BaseLayout>

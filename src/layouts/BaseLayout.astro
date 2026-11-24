@@ -1,0 +1,29 @@
+---
+import Seo from "../components/Seo.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import CallNowLink from "../components/CallNowLink.astro";
+import { business } from "../data/business";
+import "../styles/global.css";
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang={business.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo {title} {description} />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" type="image/png" href={business.mark.src} />
+
+  </head>
+  <body>
+    <a href="#contenido" class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:p-3">Saltar al contenido</a>
+    <Header />
+    <main id="contenido" tabindex="-1"><slot /></main>
+    <Footer />
+    <CallNowLink />
+  </body>
+</html>

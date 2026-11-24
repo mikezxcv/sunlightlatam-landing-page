@@ -1,0 +1,21 @@
+---
+import Icon from "./Icon.astro";
+import { services } from "../data/services";
+interface Props { full?: boolean }
+const { full = false } = Astro.props;
+const Heading = full ? "h1" : "h2";
+---
+<section id="servicios" class="shell py-9 sm:py-12" aria-labelledby="services-title">
+  <Heading id="services-title" class="section-title">{full ? "Instalación y mantenimiento de paneles solares en El Salvador" : "Servicios"}</Heading>
+  <ul class="mt-6 grid gap-4 md:grid-cols-3">
+    {services.map(({ icon, title, description }) => (
+      <li class="relative isolate overflow-hidden rounded-xl border border-orange-100 bg-cream/55 p-5 pb-8 after:absolute after:inset-x-0 after:bottom-0 after:-z-10 after:h-6 after:bg-linear-to-r after:from-solar after:to-orange-400 after:[clip-path:polygon(24%_100%,100%_0,100%_100%)]">
+        <div class="flex items-center gap-4">
+          <span class="grid size-14 shrink-0 place-items-center rounded-full bg-amber-100 text-brand"><Icon name={icon} class="size-7" /></span>
+          <h3 class="text-xl leading-tight font-extrabold tracking-tight">{title}</h3>
+        </div>
+        <p class="mt-4">{description}</p>
+      </li>
+    ))}
+  </ul>
+</section>

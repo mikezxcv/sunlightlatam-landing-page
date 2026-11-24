@@ -1,0 +1,75 @@
+﻿---
+import { business } from "../data/business";
+const recipient = business.email.trim();
+---
+<form id="solicitud" class="mt-8 max-w-2xl rounded-xl border border-gray-200 p-5 sm:p-8" action={recipient ? `https://formsubmit.co/${recipient}` : undefined} method="post">
+  <h2 class="mb-5 text-2xl font-bold">Solicita una cotización</h2>
+  <input type="hidden" name="_subject" value={`Solicitud de cotización | ${business.name}`} />
+  <input type="hidden" name="_template" value="basic" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input hidden name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <fieldset disabled={!recipient} class="grid gap-4">
+    <label>Nombre<input required name="name" autocomplete="name" maxlength="150" /></label>
+    <label>Correo electrónico (opcional)<input type="email" name="email" autocomplete="email" maxlength="254" /></label>
+    <label>Teléfono<input required type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="22" pattern="(?:\+503[ ]?)?[0-9]{4}[ \-]?[0-9]{4}|\+[1-9][0-9]{7,14}" placeholder="Ej. 7000-0000" title="Ingresa ocho dígitos o un número internacional con + y código de país." /></label>
+    <label>Dirección y municipio<input required name="address" autocomplete="street-address" maxlength="500" /></label>
+    <label>Mensaje<textarea required name="message" rows="5" maxlength="5000" placeholder="Cuéntanos qué necesitas para tu vivienda o negocio."></textarea></label>
+    <label class="flex items-center gap-3"><input type="checkbox" required name="human_confirmation" value="sí" /> No soy un robot</label>
+    <button class="action justify-self-start disabled:opacity-60" type="submit">Enviar solicitud</button>
+  </fieldset>
+  {!recipient && <p>El envío de solicitudes estará disponible próximamente.</p>}
+  <p role="status" tabindex="-1" class="mt-3" aria-live="polite"></p>
+  <button hidden type="button" class="mt-3 font-bold underline">Enviar otra solicitud</button>
+</form>
+<style>
+  label { font-weight: 600; }
+  input:not([type=checkbox]), textarea { display: block; width: 100%; margin-top: .4rem; padding: .75rem; border: 1px solid #78808b; border-radius: .4rem; font-weight: 400; }
+</style>
+<script>
+  import { retryAfterSeconds } from "../lib/retry-after.js";
+  const form = document.querySelector<HTMLFormElement>("#solicitud")!;
+  const fields = form.querySelector("fieldset")!;
+  const status = form.querySelector<HTMLElement>('[role="status"]')!;
+  const submit = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+  const again = form.querySelector<HTMLButtonElement>('button[type="button"]')!;
+  again.addEventListener("click", () => {
+    again.hidden = true;
+    fields.hidden = false;
+    status.textContent = "";
+    fields.querySelector("input")?.focus();
+  });
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+    if (submit.disabled || fields.disabled || !form.reportValidity()) return;
+    const payload = Object.fromEntries(new FormData(form));
+    if (payload._honey) return;
+    payload._url = location.origin + location.pathname;
+    payload["Fecha de solicitud (El Salvador)"] = new Date().toLocaleString("es-SV", { timeZone: "America/El_Salvador" });
+    submit.disabled = true;
+    status.textContent = "Enviando solicitud…";
+    let delay = 0;
+    try {
+      const endpoint = new URL(form.action);
+      endpoint.pathname = "/ajax" + endpoint.pathname;
+      const response = await fetch(endpoint, {
+        method: "POST", body: JSON.stringify(payload), signal: AbortSignal.timeout(25000),
+        headers: { Accept: "application/json", "Content-Type": "application/json" },
+      });
+      if (response.status === 429) delay = retryAfterSeconds(response.headers.get("Retry-After"));
+      if (!response.ok) throw new Error("Solicitud rechazada");
+      const result = await response.json();
+      if (String(result.success) !== "true") throw new Error("Solicitud sin confirmar");
+      form.reset();
+      fields.hidden = true;
+      status.textContent = "Gracias. Tu solicitud se envió correctamente.";
+      again.hidden = false;
+    } catch {
+      status.textContent = delay ? `Espera ${delay} segundos antes de volver a intentarlo.` : "No pudimos confirmar el envío. Puedes intentarlo de nuevo o contactarnos por teléfono o correo.";
+    } finally {
+      status.focus();
+      if (delay) window.setTimeout(() => { submit.disabled = false; status.textContent = "Ya puedes volver a enviar tu solicitud."; }, delay * 1000);
+      else submit.disabled = false;
+    }
+  });
+</script>

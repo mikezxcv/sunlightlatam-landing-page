@@ -1,0 +1,60 @@
+---
+import { getImage } from "astro:assets";
+import { business, navigation } from "../data/business";
+import { services } from "../data/services";
+import { heroPhoto } from "../data/gallery";
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const path = Astro.url.pathname;
+const url = (value: string) => Astro.site ? new URL(value, Astro.site).href : value;
+const canonical = Astro.site && url(path);
+const article = path.startsWith("/blog/") && path !== "/blog/";
+const name = title.replace(` | ${business.name}`, "");
+const photo = await getImage({ src: heroPhoto, width: 1200, height: 630, format: "jpeg" });
+const organization = { "@id": url("/#organization") };
+const website = { "@id": url("/#website") };
+const page = { "@id": url(path + "#webpage") };
+const country = { "@type": "Country", name: business.area };
+const pageTypes: Record<string, string> = {
+  "/contacto/": "ContactPage", "/galeria/": "ImageGallery",
+  "/servicios/": "CollectionPage", "/blog/": "CollectionPage",
+};
+const trail = [
+  navigation[0],
+  ...(article ? [{ href: "/blog/", label: "Blog" }] : []),
+  { href: path, label: navigation.find(item => item.href === path)?.label ?? name },
+];
+const graph = [
+  { ...organization, "@type": "Organization", name: business.name, url: url("/"),
+    description: business.description, logo: url(business.logo.src), areaServed: country,
+    telephone: business.phone || undefined, email: business.email || undefined },
+  { ...website, "@type": "WebSite", name: business.name, url: url("/"), publisher: organization, inLanguage: business.lang },
+  { ...page, "@type": pageTypes[path] ?? "WebPage", name: title, description, url: url(path),
+    isPartOf: website, inLanguage: business.lang,
+    breadcrumb: path === "/" ? undefined : { "@id": url(path + "#breadcrumbs") } },
+  ...(path === "/" ? [] : [{ "@type": "BreadcrumbList", "@id": url(path + "#breadcrumbs"),
+    itemListElement: trail.map(({ label, href }, index) => ({
+      "@type": "ListItem", position: index + 1, name: label, item: url(href),
+    })) }]),
+  ...(path === "/servicios/" ? services.map(service => ({
+    "@type": "Service", name: service.title, description: service.description,
+    provider: organization, areaServed: country, mainEntityOfPage: page,
+  })) : []),
+  ...(article ? [{ "@type": "BlogPosting", headline: name, description,
+    publisher: organization, mainEntityOfPage: page, inLanguage: business.lang }] : []),
+];
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+{canonical && <link rel="canonical" href={canonical} />}
+<meta property="og:type" content={article ? "article" : "website"} />
+<meta property="og:locale" content={business.lang.replace("-", "_")} />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+{canonical && <meta property="og:url" content={canonical} />}
+{Astro.site && <meta property="og:image" content={url(photo.src)} />}
+<meta name="twitter:card" content="summary_large_image" />
+<script type="application/ld+json" set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c")} />

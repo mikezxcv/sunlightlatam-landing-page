@@ -1,0 +1,17 @@
+---
+import ContactForm from "../components/ContactForm.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business";
+---
+<BaseLayout title={`Contacto | ${business.name}`} description="Contacta con Sunlight para consultar sobre instalación y mantenimiento de paneles solares.">
+  <section class="shell py-12">
+    <h1 class="section-title">Contacta con {business.name}</h1>
+    <p class="mt-6 max-w-xl">Para solicitar una cotización, indica tu municipio, si se trata de una vivienda o negocio y si necesitas instalación o mantenimiento.</p>
+    <div class="mt-5 flex flex-wrap items-center gap-4">
+      {business.phoneHref && <a class="action" href={business.phoneHref}>Llamar al {business.phone}</a>}
+      {business.email && <a class="font-bold underline" href={`mailto:${business.email}`}>{business.email}</a>}
+      {!business.phoneHref && !business.email && <p>Publicaremos aquí el teléfono y el correo de atención.</p>}
+    </div>
+    <ContactForm />
+  </section>
+</BaseLayout>

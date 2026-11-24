@@ -1,0 +1,18 @@
+---
+import { business } from "../data/business";
+---
+<footer id="contacto" class="bg-footer pt-7 pb-24 sm:pt-8" aria-labelledby="contact-title">
+  <div class="shell grid gap-5 sm:grid-cols-[auto_1fr] sm:items-center lg:grid-cols-[auto_1fr_auto]">
+    <h2 id="contact-title" class="section-title">Contacto</h2>
+    <div class="sm:border-s sm:border-ink sm:ps-6">
+      <p class="max-w-[34ch] font-semibold">¿Listo para aprovechar la energía solar en tu hogar o negocio?</p>
+      {business.phone ? (
+        <a class="mt-1 inline-flex min-h-11 items-center font-bold underline underline-offset-4" href={business.phoneHref}>{business.phone}</a>
+      ) : (
+        <p class="mt-2 text-sm">Número de contacto próximamente.</p>
+      )}
+      {business.email && <a class="block font-bold underline" href={`mailto:${business.email}`}>{business.email}</a>}
+    </div>
+    {Astro.url.pathname !== "/contacto/" && <a class="action justify-self-start sm:col-start-2 lg:col-start-auto" href="/contacto/">Solicita una cotización</a>}
+  </div>
+</footer>

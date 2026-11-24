@@ -1,0 +1,26 @@
+---
+import { Image } from "astro:assets";
+import { business, navigation } from "../data/business";
+---
+<header class="sticky top-0 z-40 border-b border-gray-200 bg-white md:static">
+  <div class="shell flex items-center justify-between gap-3 py-3">
+    <a href="/" aria-label={`${business.name}, inicio`}>
+      <Image src={business.logo} alt={business.name} width={256} height={64} class="h-auto w-40 sm:w-56 lg:w-64" />
+    </a>
+    <nav aria-label="Navegación principal" class="hidden md:block">
+      <ul class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm font-bold sm:gap-x-5 lg:gap-x-8 lg:text-base">
+        {navigation.map(({ href, label }) => (
+          <li><a class="inline-flex min-h-11 items-center decoration-2 underline-offset-8 hover:text-brand hover:underline" href={href} aria-current={Astro.url.pathname === href ? "page" : undefined}>{label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <details class="md:hidden">
+      <summary class="flex min-h-11 cursor-pointer list-none items-center rounded-lg border border-gray-300 px-4 font-bold">Menú</summary>
+      <nav aria-label="Navegación móvil" class="absolute inset-x-0 top-full max-h-[70dvh] overflow-auto border-b border-gray-200 bg-white px-5 py-2 shadow-lg">
+        {navigation.map(({ href, label }) => (
+          <a class="flex min-h-11 items-center rounded px-3 font-semibold hover:bg-cream aria-[current=page]:text-brand" href={href} aria-current={Astro.url.pathname === href ? "page" : undefined}>{label}</a>
+        ))}
+      </nav>
+    </details>
+  </div>
+</header>

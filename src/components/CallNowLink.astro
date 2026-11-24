@@ -1,0 +1,12 @@
+---
+import Icon from "./Icon.astro";
+import { business } from "../data/business";
+---
+<a
+  class="fixed z-20 inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-5 py-3 font-bold text-white shadow-lg transition-colors hover:bg-slate-700 [bottom:max(1rem,env(safe-area-inset-bottom))] [right:max(1rem,env(safe-area-inset-right))]"
+  href={business.phoneHref ?? "/contacto/"}
+  aria-label={business.phoneHref ? `Llamar a ${business.name}` : `Contacto de ${business.name}`}
+>
+  <Icon name="phone" class="size-5" />
+  {business.phoneHref ? "Llamar" : "Contacto"}
+</a>
