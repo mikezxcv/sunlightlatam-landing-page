@@ -1,4 +1,4 @@
-﻿---
+---
 import { business } from "../data/business";
 const recipient = business.email.trim();
 ---
@@ -11,8 +11,8 @@ const recipient = business.email.trim();
   <fieldset disabled={!recipient} class="grid gap-4">
     <label>Nombre<input required name="name" autocomplete="name" maxlength="150" /></label>
     <label>Correo electrónico (opcional)<input type="email" name="email" autocomplete="email" maxlength="254" /></label>
-    <label>Teléfono<input required type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="22" pattern="(?:\+503[ ]?)?[0-9]{4}[ \-]?[0-9]{4}|\+[1-9][0-9]{7,14}" placeholder="Ej. 7000-0000" title="Ingresa ocho dígitos o un número internacional con + y código de país." /></label>
-    <label>Dirección y municipio<input required name="address" autocomplete="street-address" maxlength="500" /></label>
+    <label>Teléfono<input required type="tel" name="phone" autocomplete="tel" inputmode="tel" maxlength="22" pattern="[+]?[0-9][0-9 \-]{5,19}[0-9]" placeholder="Número con código de país" title="Ingresa tu teléfono con código de país. Puedes usar espacios o guiones." /></label>
+    <label>Dirección, ciudad y país<input required name="address" autocomplete="street-address" maxlength="500" /></label>
     <label>Mensaje<textarea required name="message" rows="5" maxlength="5000" placeholder="Cuéntanos qué necesitas para tu vivienda o negocio."></textarea></label>
     <label class="flex items-center gap-3"><input type="checkbox" required name="human_confirmation" value="sí" /> No soy un robot</label>
     <button class="action justify-self-start disabled:opacity-60" type="submit">Enviar solicitud</button>
@@ -45,7 +45,7 @@ const recipient = business.email.trim();
     const payload = Object.fromEntries(new FormData(form));
     if (payload._honey) return;
     payload._url = location.origin + location.pathname;
-    payload["Fecha de solicitud (El Salvador)"] = new Date().toLocaleString("es-SV", { timeZone: "America/El_Salvador" });
+    payload["Fecha de solicitud (UTC)"] = new Date().toISOString();
     submit.disabled = true;
     status.textContent = "Enviando solicitud…";
     let delay = 0;

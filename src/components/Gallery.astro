@@ -6,17 +6,11 @@ const { full = false } = Astro.props;
 const Heading = full ? "h1" : "h2";
 ---
 <section id="galeria" class:list={["shell pb-10", full && "pt-10"]} aria-labelledby="gallery-title">
-  <Heading id="gallery-title" class="section-title">{full ? "Galería del equipo de Sunlight en El Salvador" : "Galería"}</Heading>
+  <Heading id="gallery-title" class="section-title">{full ? "Galería del equipo de Sunlight" : "Galería"}</Heading>
   <ul class="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-    {(full ? gallery : gallery.slice(0, 3)).map(({ image, alt, title, description }) => (
+    {(full ? gallery : gallery.slice(0, 3)).map(({ image, alt }) => (
       <li>
-        <figure>
-          <Image src={image} alt={alt} widths={[360, 640, 880]} sizes="(min-width: 640px) 33vw, 100vw" class="aspect-[16/10] w-full rounded-lg object-cover" />
-          <figcaption class="py-3">
-            <p class="text-lg font-bold">{title}</p>
-            <p class="mt-1 text-sm leading-relaxed">{description}</p>
-          </figcaption>
-        </figure>
+        <Image src={image} alt={alt} widths={[360, 640, 880]} sizes="(min-width: 640px) 33vw, 100vw" class="aspect-[16/10] w-full rounded-lg object-cover" />
       </li>
     ))}
   </ul>

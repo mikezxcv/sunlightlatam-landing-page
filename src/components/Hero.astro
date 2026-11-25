@@ -4,11 +4,11 @@ import { business } from "../data/business";
 import { heroPhoto } from "../data/gallery";
 ---
 <section id="inicio" class="relative isolate flex min-h-[27rem] items-center overflow-hidden bg-ink sm:min-h-[32rem]" aria-labelledby="hero-title">
-  <Image src={heroPhoto} alt="Equipo técnico de Sunlight junto a su vehículo de servicio" widths={[640, 960, 1440, 1920]} sizes="100vw" priority class="absolute inset-0 -z-20 size-full object-cover object-[center_51%]" />
+  <Image src={heroPhoto} alt="Vista de una cubierta comercial" widths={[640, 960, 1440, 1920]} sizes="100vw" priority class="absolute inset-0 -z-20 size-full object-cover object-[center_51%]" />
   <div class="absolute inset-0 -z-10 bg-linear-to-r from-black/90 via-black/65 to-black/25 lg:to-black/10"></div>
   <div class="shell py-16 text-white">
     <h1 id="hero-title" class="max-w-[15ch] text-4xl leading-[1.02] font-black tracking-tight sm:text-5xl lg:text-6xl">Energía solar para tu hogar o negocio</h1>
-    <p class="mt-5 max-w-[31ch] text-lg font-medium sm:text-2xl">Instalación y mantenimiento en todo {business.area}</p>
+    <p class="mt-5 max-w-[31ch] text-lg font-medium sm:text-2xl">Instalación y mantenimiento en {business.area}</p>
     <a class="action mt-7" href="/contacto/">Solicita una cotización</a>
   </div>
 </section>

@@ -1,6 +1,9 @@
 ---
 title: "¿Cuándo limpiar tus paneles solares?"
 description: "Identifica las señales de que tus paneles necesitan una revisión o limpieza."
+hero: "./trabajo-en-techo.jpeg"
+heroAlt: "Técnicos de Sunlight trabajando sobre una cubierta metálica"
+heroCaption: "Si los paneles solo son accesibles desde el techo, solicita una revisión técnica."
 order: 1
 ---
 

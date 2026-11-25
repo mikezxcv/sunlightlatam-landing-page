@@ -13,7 +13,7 @@ const name = title.replace(` | ${business.name}`, "");
 const organization = { "@id": url("/#organization") };
 const website = { "@id": url("/#website") };
 const page = { "@id": url(path + "#webpage") };
-const country = { "@type": "Country", name: business.area };
+const region = { "@type": "Place", name: business.area };
 const pageTypes: Record<string, string> = {
   "/contacto/": "ContactPage", "/galeria/": "ImageGallery",
   "/servicios/": "CollectionPage", "/blog/": "CollectionPage",
@@ -25,7 +25,7 @@ const trail = [
 ];
 const graph = [
   { ...organization, "@type": "Organization", name: business.name, url: url("/"),
-    description: business.description, logo: url(business.logo.src), areaServed: country,
+    description: business.description, logo: url(business.logo.src), areaServed: region,
     telephone: business.phone || undefined, email: business.email || undefined },
   { ...website, "@type": "WebSite", name: business.name, url: url("/"), publisher: organization, inLanguage: business.lang },
   { ...page, "@type": pageTypes[path] ?? "WebPage", name: title, description, url: url(path),
@@ -37,7 +37,7 @@ const graph = [
     })) }]),
   ...(path === "/servicios/" ? services.map(service => ({
     "@type": "Service", name: service.title, description: service.description,
-    provider: organization, areaServed: country, mainEntityOfPage: page,
+    provider: organization, areaServed: region, mainEntityOfPage: page,
   })) : []),
   ...(article ? [{ "@type": "BlogPosting", headline: name, description,
     publisher: organization, mainEntityOfPage: page, inLanguage: business.lang }] : []),
@@ -48,7 +48,7 @@ const graph = [
 <meta name="robots" content="index, follow, max-image-preview:large" />
 {canonical && <link rel="canonical" href={canonical} />}
 <meta property="og:type" content={article ? "article" : "website"} />
-<meta property="og:locale" content={business.lang.replace("-", "_")} />
+
 <meta property="og:site_name" content={business.name} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

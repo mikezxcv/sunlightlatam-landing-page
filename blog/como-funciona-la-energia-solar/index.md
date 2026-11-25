@@ -1,6 +1,9 @@
 ---
 title: "¿Cómo funciona la energía solar?"
 description: "Descubre cómo los paneles convierten la luz del sol en electricidad para tu hogar o negocio."
+hero: "./cubierta-comercial.jpeg"
+heroAlt: "Vista superior de una cubierta comercial con personal técnico"
+heroCaption: "La superficie disponible y las sombras del entorno influyen en el diseño de un sistema solar."
 order: 2
 ---
 

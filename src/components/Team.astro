@@ -1,0 +1,25 @@
+﻿---
+import { Image } from "astro:assets";
+import teamPhoto from "../assets/portada/equipo-sunlight.jpeg";
+---
+
+<section aria-labelledby="team-title" class="bg-cream">
+  <div class="shell grid items-center gap-6 py-9 md:grid-cols-[1fr_1.5fr] md:gap-10 md:py-12">
+    <div>
+      <h2 id="team-title" class="section-title">
+        Nuestro equipo
+      </h2>
+      <p class="mt-4 max-w-md text-lg">
+        Conoce al equipo de Sunlight: profesionales certificados listos para
+        impulsar tus proyectos.
+      </p>
+    </div>
+    <Image
+      src={teamPhoto}
+      alt="Equipo técnico de Sunlight junto a su vehículo de servicio"
+      widths={[480, 800, 1200]}
+      sizes="(min-width: 768px) 55vw, 100vw"
+      class="h-auto w-full rounded-xl"
+    />
+  </div>
+</section>

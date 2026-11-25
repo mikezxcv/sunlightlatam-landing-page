@@ -27,3 +27,5 @@ El resultado de producción se genera en `dist/`.
 ## SEO y dominio público
 
 Configura `siteUrl` en `src/data/business.json` con el origen HTTPS oficial y recompila. También puedes definir `SITE_URL` en el entorno de compilación. Astro genera las URLs canónicas, las imágenes sociales absolutas y el sitemap enlazado desde robots.txt a partir de ese origen.
+
+Cada artículo vive en `blog/<slug>/index.md` junto a su fotografía. El nombre de la carpeta define la URL. En el encabezado del Markdown, `hero` apunta al archivo relativo, `heroAlt` describe la imagen y `heroCaption` permite añadir un pie de foto. Inicio, Blog y la página del artículo usan esa misma fotografía.

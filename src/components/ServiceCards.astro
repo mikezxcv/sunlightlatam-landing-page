@@ -6,16 +6,25 @@ const { full = false } = Astro.props;
 const Heading = full ? "h1" : "h2";
 ---
 <section id="servicios" class="shell py-9 sm:py-12" aria-labelledby="services-title">
-  <Heading id="services-title" class="section-title">{full ? "Instalación y mantenimiento de paneles solares en El Salvador" : "Servicios"}</Heading>
+  <Heading id="services-title" class="section-title">{full ? "Instalación y mantenimiento de paneles solares en América Latina" : "Servicios"}</Heading>
   <ul class="mt-6 grid gap-4 md:grid-cols-3">
-    {services.map(({ icon, title, description }) => (
-      <li class="relative isolate overflow-hidden rounded-xl border border-orange-100 bg-cream/55 p-5 pb-8 after:absolute after:inset-x-0 after:bottom-0 after:-z-10 after:h-6 after:bg-linear-to-r after:from-solar after:to-orange-400 after:[clip-path:polygon(24%_100%,100%_0,100%_100%)]">
+    {services.map(({ slug, icon, title, description }) => (
+      <li class="service-card relative isolate overflow-hidden rounded-xl border border-orange-100 bg-cream/55 p-5 pb-8 after:absolute after:inset-x-0 after:bottom-0 after:-z-10 after:h-6 after:bg-linear-to-r after:from-solar after:to-orange-400 after:[clip-path:polygon(24%_100%,100%_0,100%_100%)]">
         <div class="flex items-center gap-4">
           <span class="grid size-14 shrink-0 place-items-center rounded-full bg-amber-100 text-brand"><Icon name={icon} class="size-7" /></span>
           <h3 class="text-xl leading-tight font-extrabold tracking-tight">{title}</h3>
         </div>
         <p class="mt-4">{description}</p>
+        <a href={`/servicios/${slug}/`} aria-label={`Ver detalle de ${title.toLowerCase()}`} class="mt-4 inline-block font-bold text-brand underline underline-offset-4 after:absolute after:inset-0">Ver detalle</a>
       </li>
     ))}
   </ul>
 </section>
+
+<style>
+  .service-card:focus-within { outline: 2px solid var(--color-brand); outline-offset: 3px; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .service-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+    .service-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgb(0 0 0 / 9%); }
+  }
+</style>

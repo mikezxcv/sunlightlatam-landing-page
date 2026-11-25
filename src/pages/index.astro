@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import Team from "../components/Team.astro";
 import Hero from "../components/Hero.astro";
 import ServiceCards from "../components/ServiceCards.astro";
 import Gallery from "../components/Gallery.astro";
@@ -8,6 +9,7 @@ import { business } from "../data/business";
 ---
 <BaseLayout title={`${business.name} | Paneles solares en ${business.area}`} description={business.description}>
   <Hero />
+  <Team />
   <ServiceCards />
   <Gallery />
   <BlogPreview />
